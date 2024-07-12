@@ -70,7 +70,7 @@ const tiposItemMap = {
 
 type TipoItem = keyof typeof tiposItemMap;
 
-const meiosTransporte = {
+const meiosTransporteMap = {
   Carro: Car,
   Caminhao: Truck,
   Barco: Sailboat,
@@ -85,8 +85,12 @@ const criarPedidoFormSchema = z.object({
     required_error: "Selecione um ponto de entrega.",
   }),
   items: z.record(
-    z.enum(Object.keys(tiposItemMap) as ["g", "m", "p"]),
+    z.enum(Object.keys(tiposItemMap) as [string, ...string[]]),
     z.number(),
+  ),
+  meiosTransporte: z.record(
+    z.enum(Object.keys(meiosTransporteMap) as [string, ...string[]]),
+    z.boolean(),
   ),
 });
 
@@ -96,6 +100,12 @@ const defaultValues: Partial<CriarPedidoFormValues> = {
   pontoColeta: "coleta1",
   pontoEntrega: "entrega1",
   items: { g: 0, m: 0, p: 0 },
+  meiosTransporte: {
+    Carro: false,
+    Caminhao: false,
+    Barco: false,
+    Avião: false,
+  },
 };
 
 export default function Page() {
@@ -110,6 +120,8 @@ export default function Page() {
   });
 
   const items = form.watch("items") ?? defaultValues.items;
+  const meiosTransporte =
+    form.watch("meiosTransporte") ?? defaultValues.meiosTransporte;
 
   function onSubmit(data: CriarPedidoFormValues) {
     if (step < 3) {
@@ -324,11 +336,18 @@ export default function Page() {
 
           {step === 3 && (
             <div className="flex flex-wrap gap-2">
-              {Object.entries(meiosTransporte).map(([meio, Icon]) => (
+              {Object.entries(meiosTransporteMap).map(([meio, Icon]) => (
                 <Button
-                  variant="outline"
+                  type="button"
+                  variant={meiosTransporte[meio] ? "default" : "outline"}
                   key={meio}
                   className="flex min-h-32 min-w-32 flex-col items-center gap-2 p-4"
+                  onPointerDown={() => {
+                    form.setValue(
+                      `meiosTransporte.${meio}`,
+                      !meiosTransporte[meio],
+                    );
+                  }}
                 >
                   <Icon className="size-16" />
                   <p>{meio}</p>
