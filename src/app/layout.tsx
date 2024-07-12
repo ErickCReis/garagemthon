@@ -1,4 +1,6 @@
 import "@/styles/globals.css";
+
+import { Toaster } from "@/components/ui/toaster";
 import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
 import { TRPCReactProvider } from "@/trpc/react";
@@ -16,24 +18,8 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${GeistSans.variable}`}>
       <body>
-        <TRPCReactProvider>
-          <header>
-            <nav>
-              <ul className="flex space-x-4 p-4 bg-gray-800 text-white">
-                <li>
-                  <Link href="/">Home</Link>
-                </li>
-                <li>
-                  <Link href="/pedidos/criar">Criar Pedido</Link>
-                </li>
-                <li>
-                  <Link href="/pedidos">Pedidos</Link>
-                </li>
-              </ul>
-            </nav>
-          </header>
-          <main>{children}</main>
-        </TRPCReactProvider>
+        <TRPCReactProvider>{children}</TRPCReactProvider>
+        <Toaster />
       </body>
     </html>
   );
