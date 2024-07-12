@@ -2,7 +2,7 @@
 // https://orm.drizzle.team/docs/sql-schema-declaration
 
 import { sql } from "drizzle-orm";
-import { index, int, sqliteTableCreator, text } from "drizzle-orm/sqlite-core";
+import { blob, int, sqliteTableCreator, text } from "drizzle-orm/sqlite-core";
 
 /**
  * This is an example of how to use the multi-project schema feature of Drizzle ORM. Use the same
@@ -12,19 +12,22 @@ import { index, int, sqliteTableCreator, text } from "drizzle-orm/sqlite-core";
  */
 export const createTable = sqliteTableCreator((name) => `garagemthon_${name}`);
 
-export const posts = createTable(
-  "post",
+export const pedidos = createTable(
+  "pedido",
   {
     id: int("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
-    name: text("name", { length: 256 }),
+    pontoColeta: text("ponto_coleta").notNull(),
+    pontoEntrega: text("ponto_entrega").notNull(),
+    items: blob("items", { mode: "json" }).notNull(),
+    meiosTransportes: blob("meios_transportes", { mode: "json" }).notNull(),
     createdAt: int("created_at", { mode: "timestamp" })
       .default(sql`(unixepoch())`)
       .notNull(),
     updatedAt: int("updated_at", { mode: "timestamp" }).$onUpdate(
-      () => new Date()
+      () => new Date(),
     ),
   },
-  (example) => ({
-    nameIndex: index("name_idx").on(example.name),
-  })
+  // (example) => ({
+  //   nameIndex: index("name_idx").on(example.name),
+  // })
 );
