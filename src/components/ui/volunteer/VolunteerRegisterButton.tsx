@@ -1,14 +1,6 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import {
   Form,
@@ -18,11 +10,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 import { toast } from "@/components/ui/use-toast";
 import VolunteerInput from "@/components/ui/volunteer/volunteerInput";
 import {
@@ -31,21 +18,12 @@ import {
 } from "@/lib/validators";
 import { api } from "@/trpc/react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import classNames from "classnames";
-import { CheckIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
-const skillsList = [
-  { label: "Skill 1", value: "skill1" },
-  { label: "Skill 2", value: "skill2" },
-  { label: "Skill 3", value: "skill3" },
-] as const;
-
 export default function VolunteerRegisterButton() {
   const router = useRouter();
-
   const [isOpen, setIsOpen] = useState(false);
 
   const form = useForm<CriarVoluntarioFormValues>({
@@ -135,59 +113,11 @@ export default function VolunteerRegisterButton() {
               control={form.control}
               name="skills"
               render={({ field }) => (
-                <FormItem className="flex flex-col">
+                <FormItem>
                   <FormLabel>Habilidades</FormLabel>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <FormControl>
-                        <Button
-                          variant="outline"
-                          role="combobox"
-                          className={classNames(
-                            "justify-between",
-                            !field.value && "text-muted-foreground",
-                          )}
-                        >
-                          {field.value
-                            ? skillsList.find(
-                                (skill) => skill.value === field.value,
-                              )?.label
-                            : "Selecione uma habilidade."}
-                        </Button>
-                      </FormControl>
-                    </PopoverTrigger>
-                    <PopoverContent className="p-0">
-                      <Command>
-                        <CommandInput placeholder="Buscar habilidade..." />
-                        <CommandEmpty>
-                          Nenhuma habilidade encontrada.
-                        </CommandEmpty>
-                        <CommandList>
-                          <CommandGroup>
-                            {skillsList.map((skill) => (
-                              <CommandItem
-                                value={skill.label}
-                                key={skill.value}
-                                onSelect={() =>
-                                  form.setValue("skills", skill.value)
-                                }
-                              >
-                                <CheckIcon
-                                  className={classNames(
-                                    "mr-2 h-4 w-4",
-                                    skill.value === field.value
-                                      ? "opacity-100"
-                                      : "opacity-0",
-                                  )}
-                                />
-                                {skill.label}
-                              </CommandItem>
-                            ))}
-                          </CommandGroup>
-                        </CommandList>
-                      </Command>
-                    </PopoverContent>
-                  </Popover>
+                  <FormControl>
+                    <VolunteerInput id="skills" {...field} />
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
