@@ -84,13 +84,16 @@ const defaultValues: Partial<CriarPedidoFormValues> = {
   },
 };
 
-export function CriarPedidoForm() {
+export function CriarPedidoForm({ donoId }: { donoId: string }) {
   const [quantidadeItems, setQuantidadeItems] = useState<number>(1);
   const [tipoItem, setTipoItem] = useState<TipoItem | undefined>();
 
   const form = useForm<CriarPedidoFormValues>({
     resolver: zodResolver(criarPedidoFormSchema),
-    defaultValues,
+    defaultValues: {
+      ...defaultValues,
+      donoId,
+    },
   });
 
   const router = useRouter();

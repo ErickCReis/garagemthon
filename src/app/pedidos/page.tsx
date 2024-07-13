@@ -1,6 +1,4 @@
-import { Button } from "@/components/ui/button";
 import { api } from "@/trpc/server";
-import Link from "next/link";
 import { Pedido } from "../_components/pedido";
 
 export default async function Page() {
@@ -10,9 +8,6 @@ export default async function Page() {
     <>
       <div className="flex justify-between">
         <h1>Todos os Pedidos</h1>
-        <Link href="/pedidos/criar">
-          <Button>Criar Pedido</Button>
-        </Link>
       </div>
       <div className="">
         {pedidos.map((pedido) => (
