@@ -7,14 +7,24 @@ export default async function Page({ params }: { params: { id: string } }) {
   const voluntario = await api.voluntarios.getById(+params.id);
 
   return (
-    <>
-      <h1>Voluntario</h1>
+    <div className="container mx-auto p-4">
+      <div className="flex items-center space-x-4 mb-8">
+        <div className="rounded-full bg-gray-200 p-4">
+          <span className="text-6xl">👩🏻‍💻</span>
+        </div>
+        <div>
+          <h1 className="text-3xl font-bold">{voluntario?.voluntario.nome}</h1>
+          <p className="text-gray-600">{voluntario?.voluntario.email}</p>
+          <p className="text-gray-600">{voluntario?.voluntario.cpf}</p>
+        </div>
+      </div>
+
       <h2 className="mb-4 mt-8 text-2xl font-semibold">Lista de Veículos</h2>
       <Link href={`/voluntarios/${params.id}/adicionar-veiculo`}>
         <Button>Adicionar Veículo</Button>
       </Link>
 
-      <ul className="space-y-4">
+      <ul className="space-y-4 mt-4">
         {voluntario?.veiculos.map((vehicle) => (
           <Card key={vehicle.id} className="rounded-lg border p-4 shadow-md">
             <li>
@@ -39,6 +49,6 @@ export default async function Page({ params }: { params: { id: string } }) {
           </Card>
         ))}
       </ul>
-    </>
+    </div>
   );
 }
