@@ -1,4 +1,4 @@
-import { MeioTransportIcon } from "@/app/_components/meio-transport-icon";
+import { Pedido } from "@/app/_components/pedido";
 import { VincularVoluntario } from "@/app/_components/vincular-voluntario";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -8,6 +8,11 @@ import Link from "next/link";
 
 export default async function Page({ params }: { params: { id: string } }) {
   const pedido = await api.pedido.getById(+params.id);
+
+  if (!pedido) {
+    return <div>Pedido não encontrado</div>;
+  }
+
   const ong = ongs.find((ong) => ong.id === pedido.donoId);
 
   if (!ong) {
@@ -15,26 +20,17 @@ export default async function Page({ params }: { params: { id: string } }) {
   }
 
   return (
-    <>
-      <h1 className="text-lg font-bold">Pedido - {ong.nome}</h1>
+    <main className="flex flex-col gap-4">
+      <h1 className="text-xl font-bold">Pedido #{pedido.id}</h1>
 
-      <div className="">
-        <p>Coleta: {pedido.pontoColeta}</p>
-        <p>Entrega: {pedido.pontoEntrega}</p>
-        <div className="w-6 p-2">
-          {(pedido.meiosTransportes ?? []).map((meio) => (
-            <MeioTransportIcon
-              key={meio}
-              // @ts-expect-error: TODO: remover isso
-              meio={meio}
-              className="size-4"
-              showLabel={false}
-            />
-          ))}
-        </div>
+      <Pedido pedido={pedido} />
+
+      <div className="flex items-center justify-between gap-2">
+        <h2 className="text-xl font-bold">Voluntários</h2>
+
+        <VincularVoluntario pedidoId={params.id} />
       </div>
-      <h2 className="text-lg font-bold">Voluntários</h2>
-      <div className="space-y-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {pedido.voluntarios.map((voluntario) => (
           <Card key={voluntario.id} className="rounded-lg border p-4 shadow-md">
             <div className="mb-4 flex items-center space-x-4">
@@ -53,8 +49,6 @@ export default async function Page({ params }: { params: { id: string } }) {
           </Card>
         ))}
       </div>
-
-      <VincularVoluntario pedidoId={params.id} />
-    </>
+    </main>
   );
 }

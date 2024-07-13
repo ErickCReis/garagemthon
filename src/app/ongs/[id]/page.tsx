@@ -14,16 +14,19 @@ export default async function Page({ params }: { params: { id: string } }) {
   const pedidos = await api.pedido.getAllByDono(ong.id);
 
   return (
-    <>
-      <div className="flex justify-between">
+    <main className="space-y-4">
+      <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">{ong.nome}</h1>
         <Link href={`/ongs/${ong.id}/criar-pedido`}>
           <Button>Criar Pedido</Button>
         </Link>
       </div>
-      {pedidos.map((pedido) => (
-        <Pedido key={pedido.id} pedido={pedido} />
-      ))}
-    </>
+      <p>Pedidos cadastrados</p>
+      <div className="flex flex-col gap-4">
+        {pedidos.map((pedido) => (
+          <Pedido key={pedido.id} pedido={pedido} />
+        ))}
+      </div>
+    </main>
   );
 }

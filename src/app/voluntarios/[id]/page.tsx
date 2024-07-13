@@ -10,8 +10,8 @@ export default async function Page({ params }: { params: { id: string } }) {
   const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
 
   return (
-    <div className="container mx-auto p-4">
-      <div className="flex items-center space-x-4 mb-8">
+    <main className="space-y-4">
+      <div className="flex items-center space-x-4">
         <div className="rounded-full bg-gray-200 p-4">
           <span className="text-6xl">{randomEmoji}</span>
         </div>
@@ -22,12 +22,14 @@ export default async function Page({ params }: { params: { id: string } }) {
         </div>
       </div>
 
-      <h2 className="mb-4 mt-8 text-2xl font-semibold">Lista de Veículos</h2>
-      <Link href={`/voluntarios/${params.id}/adicionar-veiculo`}>
-        <Button>Adicionar Veículo</Button>
-      </Link>
+      <div className="flex items-center justify-between">
+        <h2 className="mb-4 mt-8 text-xl font-semibold">Lista de Veículos</h2>
+        <Link href={`/voluntarios/${params.id}/adicionar-veiculo`}>
+          <Button>Adicionar Veículo</Button>
+        </Link>
+      </div>
 
-      <ul className="space-y-4 mt-4">
+      <ul className="mt-4 space-y-4">
         {voluntario?.veiculos.map((vehicle) => (
           <Card key={vehicle.id} className="rounded-lg border p-4 shadow-md">
             <li>
@@ -52,6 +54,6 @@ export default async function Page({ params }: { params: { id: string } }) {
           </Card>
         ))}
       </ul>
-    </div>
+    </main>
   );
 }

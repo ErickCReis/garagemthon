@@ -11,7 +11,7 @@ export default async function Page() {
         Lista de todos os pedidos cadastrados por ONGs e que precisam ser
         atendidos
       </p>
-      <div className="">
+      <div className="flex flex-col gap-4">
         {pedidos.map((pedido) => (
           <Pedido key={pedido.id} pedido={pedido} />
         ))}
