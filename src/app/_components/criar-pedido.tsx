@@ -10,23 +10,9 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { cn } from "@/lib/utils";
 
 import { Button } from "@/components/ui/button";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command";
 import { Input } from "@/components/ui/input";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 import {
   Select,
   SelectContent,
@@ -35,29 +21,17 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { toast } from "@/components/ui/use-toast";
-import { meiosTransporte, type MeioTransporte, type TipoItem } from "@/data";
+import { meiosTransporte, type TipoItem } from "@/data";
 import {
   criarPedidoFormSchema,
   type CriarPedidoFormValues,
 } from "@/lib/validators";
 import { api } from "@/trpc/react";
 import { Label } from "@radix-ui/react-label";
-import { Car, CheckIcon, Plane, Sailboat, Truck } from "lucide-react";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-
-const pontosColeta = [
-  { label: "Ponto de Coleta 1", value: "coleta1" },
-  { label: "Ponto de Coleta 2", value: "coleta2" },
-  { label: "Ponto de Coleta 3", value: "coleta3" },
-] as const;
-
-const pontosEntrega = [
-  { label: "Ponto de Entrega 1", value: "entrega1" },
-  { label: "Ponto de Entrega 2", value: "entrega2" },
-  { label: "Ponto de Entrega 3", value: "entrega3" },
-] as const;
+import { MeioTransportIcon } from "./meio-transport-icon";
 
 const tiposItemMap = {
   g: "Grande (50 kg)",
@@ -65,22 +39,14 @@ const tiposItemMap = {
   p: "Pequeno (10 kg)",
 } satisfies Record<TipoItem, string>;
 
-const meiosTransporteMap = {
-  Carro: Car,
-  Caminhao: Truck,
-  Barco: Sailboat,
-  Avião: Plane,
-} satisfies Record<MeioTransporte, React.FC>;
-
 const defaultValues: Partial<CriarPedidoFormValues> = {
-  pontoColeta: "coleta1",
-  pontoEntrega: "entrega1",
   items: { g: 0, m: 0, p: 0 },
   meiosTransporte: {
     Carro: false,
     Caminhao: false,
     Barco: false,
-    Avião: false,
+    Drone: false,
+    Helicoptero: false,
   },
 };
 
@@ -128,54 +94,16 @@ export function CriarPedidoForm({ donoId }: { donoId: string }) {
           render={({ field }) => (
             <FormItem className="flex flex-col">
               <FormLabel>Ponto de coleta</FormLabel>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <FormControl>
-                    <Button
-                      variant="outline"
-                      role="combobox"
-                      className={cn(
-                        "justify-between",
-                        !field.value && "text-muted-foreground",
-                      )}
-                    >
-                      {field.value
-                        ? pontosColeta.find((pc) => pc.value === field.value)
-                            ?.label
-                        : "Selecione um ponto de coleta."}
-                    </Button>
-                  </FormControl>
-                </PopoverTrigger>
-                <PopoverContent className="w-[--radix-popover-trigger-width] p-0">
-                  <Command>
-                    <CommandInput placeholder="Buscar ..." className="h-9" />
-                    <CommandEmpty>Nenhum ponto encontrado.</CommandEmpty>
-                    <CommandList>
-                      <CommandGroup>
-                        {pontosColeta.map((pc) => (
-                          <CommandItem
-                            value={pc.label}
-                            key={pc.value}
-                            onSelect={() => {
-                              form.setValue("pontoColeta", pc.value);
-                            }}
-                          >
-                            <CheckIcon
-                              className={cn(
-                                "mr-2 h-4 w-4",
-                                pc.value === field.value
-                                  ? "opacity-100"
-                                  : "opacity-0",
-                              )}
-                            />
-                            {pc.label}
-                          </CommandItem>
-                        ))}
-                      </CommandGroup>
-                    </CommandList>
-                  </Command>
-                </PopoverContent>
-              </Popover>
+              <FormControl>
+                <Input
+                  placeholder="Endereço de coleta"
+                  value={field.value}
+                  onChange={(e) => {
+                    form.setValue("pontoColeta", e.target.value);
+                  }}
+                />
+              </FormControl>
+
               <FormMessage />
             </FormItem>
           )}
@@ -186,54 +114,16 @@ export function CriarPedidoForm({ donoId }: { donoId: string }) {
           render={({ field }) => (
             <FormItem className="flex flex-col">
               <FormLabel>Ponto de Entrega</FormLabel>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <FormControl>
-                    <Button
-                      variant="outline"
-                      role="combobox"
-                      className={cn(
-                        "justify-between",
-                        !field.value && "text-muted-foreground",
-                      )}
-                    >
-                      {field.value
-                        ? pontosEntrega.find((pe) => pe.value === field.value)
-                            ?.label
-                        : "Selecione um ponto de entrega."}
-                    </Button>
-                  </FormControl>
-                </PopoverTrigger>
-                <PopoverContent className="w-[--radix-popover-trigger-width] p-0">
-                  <Command>
-                    <CommandInput placeholder="Buscar ..." />
-                    <CommandEmpty>No language found.</CommandEmpty>
-                    <CommandList>
-                      <CommandGroup>
-                        {pontosEntrega.map((pe) => (
-                          <CommandItem
-                            value={pe.label}
-                            key={pe.value}
-                            onSelect={() => {
-                              form.setValue("pontoEntrega", pe.value);
-                            }}
-                          >
-                            <CheckIcon
-                              className={cn(
-                                "mr-2 h-4 w-4",
-                                pe.value === field.value
-                                  ? "opacity-100"
-                                  : "opacity-0",
-                              )}
-                            />
-                            {pe.label}
-                          </CommandItem>
-                        ))}
-                      </CommandGroup>
-                    </CommandList>
-                  </Command>
-                </PopoverContent>
-              </Popover>
+              <FormControl>
+                <Input
+                  placeholder="Endereço de entrega"
+                  value={field.value}
+                  onChange={(e) => {
+                    form.setValue("pontoEntrega", e.target.value);
+                  }}
+                />
+              </FormControl>
+
               <FormMessage />
             </FormItem>
           )}
@@ -305,8 +195,6 @@ export function CriarPedidoForm({ donoId }: { donoId: string }) {
 
         <div className="flex flex-wrap gap-2">
           {meiosTransporte.map((meio) => {
-            const Icon = meiosTransporteMap[meio];
-
             return (
               <Button
                 type="button"
@@ -320,8 +208,7 @@ export function CriarPedidoForm({ donoId }: { donoId: string }) {
                   );
                 }}
               >
-                <Icon className="size-16" />
-                <p>{meio}</p>
+                <MeioTransportIcon meio={meio} />
               </Button>
             );
           })}

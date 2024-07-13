@@ -1,4 +1,10 @@
-export const meiosTransporte = ["Carro", "Caminhao", "Barco", "Avião"] as const;
+export const meiosTransporte = [
+  "Carro",
+  "Caminhao",
+  "Barco",
+  "Drone",
+  "Helicoptero",
+] as const;
 export type MeioTransporte = (typeof meiosTransporte)[number];
 
 export const tiposItem = ["p", "m", "g"] as const;
