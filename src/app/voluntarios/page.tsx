@@ -5,7 +5,7 @@ export default async function Page() {
 
   return (
     <>
-      <h1>Pedidos</h1>
+      <h1>Voluntarios</h1>
       <div className="">
         <pre>{JSON.stringify(voluntarios, null, 2)}</pre>
       </div>

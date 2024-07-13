@@ -35,8 +35,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { toast } from "@/components/ui/use-toast";
-import { meiosTransporte, type MeioTransporte } from "@/data/meios-transporte";
-import { type TipoItem } from "@/data/tipos-item";
+import { meiosTransporte, type MeioTransporte, type TipoItem } from "@/data";
 import {
   criarPedidoFormSchema,
   type CriarPedidoFormValues,
@@ -95,8 +94,6 @@ const defaultValues: Partial<CriarPedidoFormValues> = {
 };
 
 export function CriarPedidoSteps() {
-  const [step, setStep] = useState<Step>(1);
-
   const [quantidadeItems, setQuantidadeItems] = useState<number>(1);
   const [tipoItem, setTipoItem] = useState<TipoItem | undefined>();
 
@@ -117,247 +114,226 @@ export function CriarPedidoSteps() {
   });
 
   const itemsForm = form.watch("items") ?? defaultValues.items;
+  const meiosTransporteForm =
+    form.watch("meiosTransporte") ?? defaultValues.meiosTransporte;
 
   function onSubmit(data: CriarPedidoFormValues) {
-    if (step < 3) {
-      setStep((step) => (step + 1) as Step);
-      return;
-    }
-
     criarPedido.mutate(data);
   }
 
   return (
-    <main className="container max-w-7xl space-y-10 p-8">
-      <h1 className="text-2xl font-bold">{steps[step]}</h1>
+    <main>
+      <h1 className="text-2xl font-bold">Criar Pedido</h1>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          {step === 1 && (
-            <>
-              <FormField
-                control={form.control}
-                name="pontoColeta"
-                render={({ field }) => (
-                  <FormItem className="flex flex-col">
-                    <FormLabel>Ponto de coleta</FormLabel>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <FormControl>
-                          <Button
-                            variant="outline"
-                            role="combobox"
-                            className={cn(
-                              "justify-between",
-                              !field.value && "text-muted-foreground",
-                            )}
-                          >
-                            {field.value
-                              ? pontosColeta.find(
-                                  (pc) => pc.value === field.value,
-                                )?.label
-                              : "Selecione um ponto de coleta."}
-                          </Button>
-                        </FormControl>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-[--radix-popover-trigger-width] p-0">
-                        <Command>
-                          <CommandInput placeholder="Buscar ..." />
-                          <CommandEmpty>No language found.</CommandEmpty>
-                          <CommandList>
-                            <CommandGroup>
-                              {pontosColeta.map((pc) => (
-                                <CommandItem
-                                  value={pc.label}
-                                  key={pc.value}
-                                  onSelect={() => {
-                                    form.setValue("pontoColeta", pc.value);
-                                  }}
-                                >
-                                  <CheckIcon
-                                    className={cn(
-                                      "mr-2 h-4 w-4",
-                                      pc.value === field.value
-                                        ? "opacity-100"
-                                        : "opacity-0",
-                                    )}
-                                  />
-                                  {pc.label}
-                                </CommandItem>
-                              ))}
-                            </CommandGroup>
-                          </CommandList>
-                        </Command>
-                      </PopoverContent>
-                    </Popover>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="pontoEntrega"
-                render={({ field }) => (
-                  <FormItem className="flex flex-col">
-                    <FormLabel>Ponto de Entrega</FormLabel>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <FormControl>
-                          <Button
-                            variant="outline"
-                            role="combobox"
-                            className={cn(
-                              "justify-between",
-                              !field.value && "text-muted-foreground",
-                            )}
-                          >
-                            {field.value
-                              ? pontosEntrega.find(
-                                  (pe) => pe.value === field.value,
-                                )?.label
-                              : "Selecione um ponto de entrega."}
-                          </Button>
-                        </FormControl>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-[--radix-popover-trigger-width] p-0">
-                        <Command>
-                          <CommandInput placeholder="Buscar ..." />
-                          <CommandEmpty>No language found.</CommandEmpty>
-                          <CommandList>
-                            <CommandGroup>
-                              {pontosEntrega.map((pe) => (
-                                <CommandItem
-                                  value={pe.label}
-                                  key={pe.value}
-                                  onSelect={() => {
-                                    form.setValue("pontoEntrega", pe.value);
-                                  }}
-                                >
-                                  <CheckIcon
-                                    className={cn(
-                                      "mr-2 h-4 w-4",
-                                      pe.value === field.value
-                                        ? "opacity-100"
-                                        : "opacity-0",
-                                    )}
-                                  />
-                                  {pe.label}
-                                </CommandItem>
-                              ))}
-                            </CommandGroup>
-                          </CommandList>
-                        </Command>
-                      </PopoverContent>
-                    </Popover>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </>
-          )}
+          <h2 className="border-b text-lg font-medium">Endereços</h2>
 
-          {step === 2 && (
-            <>
-              {Object.entries(itemsForm).map(([tipo, quantidade], index) => {
-                if (quantidade === 0) return null;
+          <FormField
+            control={form.control}
+            name="pontoColeta"
+            render={({ field }) => (
+              <FormItem className="flex flex-col">
+                <FormLabel>Ponto de coleta</FormLabel>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <FormControl>
+                      <Button
+                        variant="outline"
+                        role="combobox"
+                        className={cn(
+                          "justify-between",
+                          !field.value && "text-muted-foreground",
+                        )}
+                      >
+                        {field.value
+                          ? pontosColeta.find((pc) => pc.value === field.value)
+                              ?.label
+                          : "Selecione um ponto de coleta."}
+                      </Button>
+                    </FormControl>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-[--radix-popover-trigger-width] p-0">
+                    <Command>
+                      <CommandInput placeholder="Buscar ..." className="h-9" />
+                      <CommandEmpty>Nenhum ponto encontrado.</CommandEmpty>
+                      <CommandList>
+                        <CommandGroup>
+                          {pontosColeta.map((pc) => (
+                            <CommandItem
+                              value={pc.label}
+                              key={pc.value}
+                              onSelect={() => {
+                                form.setValue("pontoColeta", pc.value);
+                              }}
+                            >
+                              <CheckIcon
+                                className={cn(
+                                  "mr-2 h-4 w-4",
+                                  pc.value === field.value
+                                    ? "opacity-100"
+                                    : "opacity-0",
+                                )}
+                              />
+                              {pc.label}
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      </CommandList>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="pontoEntrega"
+            render={({ field }) => (
+              <FormItem className="flex flex-col">
+                <FormLabel>Ponto de Entrega</FormLabel>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <FormControl>
+                      <Button
+                        variant="outline"
+                        role="combobox"
+                        className={cn(
+                          "justify-between",
+                          !field.value && "text-muted-foreground",
+                        )}
+                      >
+                        {field.value
+                          ? pontosEntrega.find((pe) => pe.value === field.value)
+                              ?.label
+                          : "Selecione um ponto de entrega."}
+                      </Button>
+                    </FormControl>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-[--radix-popover-trigger-width] p-0">
+                    <Command>
+                      <CommandInput placeholder="Buscar ..." />
+                      <CommandEmpty>No language found.</CommandEmpty>
+                      <CommandList>
+                        <CommandGroup>
+                          {pontosEntrega.map((pe) => (
+                            <CommandItem
+                              value={pe.label}
+                              key={pe.value}
+                              onSelect={() => {
+                                form.setValue("pontoEntrega", pe.value);
+                              }}
+                            >
+                              <CheckIcon
+                                className={cn(
+                                  "mr-2 h-4 w-4",
+                                  pe.value === field.value
+                                    ? "opacity-100"
+                                    : "opacity-0",
+                                )}
+                              />
+                              {pe.label}
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      </CommandList>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-                return (
-                  <div key={index} className="flex flex-col gap-2">
-                    <div className="flex gap-2">
-                      {quantidade}x - {tiposItemMap[tipo as TipoItem]}
-                    </div>
-                  </div>
-                );
-              })}
+          <h2 className="border-b text-lg font-medium">Itens</h2>
 
-              <div className="flex items-end gap-2">
-                <div className="flex flex-col gap-2">
-                  <Label>Quantidade</Label>
-                  <Input
-                    type="number"
-                    placeholder="0"
-                    value={quantidadeItems}
-                    onChange={(e) => {
-                      setQuantidadeItems(Number(e.target.value));
-                    }}
-                  />
+          {Object.entries(itemsForm).map(([tipo, quantidade], index) => {
+            if (quantidade === 0) return null;
+
+            return (
+              <div key={index} className="flex flex-col gap-2">
+                <div className="flex gap-2">
+                  {quantidade}x - {tiposItemMap[tipo as TipoItem]}
                 </div>
-                <div className="flex flex-col gap-2">
-                  <Label>Tipo</Label>
-                  <Select
-                    onValueChange={(value) => {
-                      setTipoItem(value as TipoItem);
-                    }}
-                  >
-                    <SelectTrigger className="w-[180px]">
-                      <SelectValue placeholder="Tipo" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="g">Grande</SelectItem>
-                      <SelectItem value="m">Médio</SelectItem>
-                      <SelectItem value="p">Pequeno</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
+              </div>
+            );
+          })}
+
+          <div className="flex items-end gap-2">
+            <div className="flex flex-col gap-2">
+              <Label>Quantidade</Label>
+              <Input
+                type="number"
+                placeholder="0"
+                value={quantidadeItems}
+                onChange={(e) => {
+                  setQuantidadeItems(Number(e.target.value));
+                }}
+              />
+            </div>
+            <div className="flex flex-col gap-2">
+              <Label>Tipo</Label>
+              <Select
+                onValueChange={(value) => {
+                  setTipoItem(value as TipoItem);
+                }}
+              >
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue placeholder="Tipo" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="g">Grande</SelectItem>
+                  <SelectItem value="m">Médio</SelectItem>
+                  <SelectItem value="p">Pequeno</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <Button
+              type="button"
+              onPointerDown={() => {
+                if (!quantidadeItems || !tipoItem) {
+                  return;
+                }
+
+                const key = `items.${tipoItem}` as const;
+                const prevItems = form.getValues(key) ?? 0;
+
+                form.setValue(`items.${tipoItem}`, prevItems + quantidadeItems);
+
+                setQuantidadeItems(1);
+              }}
+            >
+              Adicionar
+            </Button>
+          </div>
+
+          <h2 className="border-b text-lg font-medium">Meios de Transporte</h2>
+
+          <div className="flex flex-wrap gap-2">
+            {meiosTransporte.map((meio) => {
+              const Icon = meiosTransporteMap[meio];
+
+              return (
                 <Button
                   type="button"
+                  variant={meiosTransporteForm[meio] ? "default" : "outline"}
+                  key={meio}
+                  className="flex min-h-32 min-w-32 flex-col items-center gap-2 p-4"
                   onPointerDown={() => {
-                    if (!quantidadeItems || !tipoItem) {
-                      return;
-                    }
-
-                    const key = `items.${tipoItem}` as const;
-                    const prevItems = form.getValues(key) ?? 0;
-
                     form.setValue(
-                      `items.${tipoItem}`,
-                      prevItems + quantidadeItems,
+                      `meiosTransporte.${meio}`,
+                      !meiosTransporteForm[meio],
                     );
-
-                    setQuantidadeItems(1);
                   }}
                 >
-                  Adicionar
+                  <Icon className="size-16" />
+                  <p>{meio}</p>
                 </Button>
-              </div>
-            </>
-          )}
+              );
+            })}
+          </div>
 
-          {step === 3 && (
-            <div className="flex flex-wrap gap-2">
-              {meiosTransporte.map((meio) => {
-                const Icon = meiosTransporteMap[meio];
-
-                return (
-                  <Button
-                    type="button"
-                    variant={meiosTransporteMap[meio] ? "default" : "outline"}
-                    key={meio}
-                    className="flex min-h-32 min-w-32 flex-col items-center gap-2 p-4"
-                    onPointerDown={() => {
-                      form.setValue(
-                        `meiosTransporte.${meio}`,
-                        !meiosTransporteMap[meio],
-                      );
-                    }}
-                  >
-                    <Icon className="size-16" />
-                    <p>{meio}</p>
-                  </Button>
-                );
-              })}
-            </div>
-          )}
-
-          <Button
-            disabled={step === 1}
-            type="button"
-            onPointerDown={() => {
-              setStep((step) => (step - 1) as Step);
-            }}
-          >
-            Anterior
-          </Button>
-          <Button type="submit">{step === 4 ? "Criar" : "Próximo"}</Button>
+          <Button type="submit">Criar</Button>
         </form>
       </Form>
     </main>
