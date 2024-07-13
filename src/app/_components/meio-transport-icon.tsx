@@ -49,10 +49,14 @@ export function MeioTransportIcon({
   className,
   showLabel = true,
 }: {
-  meio: MeioTransporte;
+  meio?: MeioTransporte;
   className?: string;
   showLabel?: boolean;
 }) {
+  if (!meio) {
+    return null;
+  }
+
   const Icon = iconMap[meio];
 
   return (
