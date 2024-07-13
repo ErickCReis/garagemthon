@@ -1,5 +1,4 @@
-// Example model schema from the Drizzle docs
-// https://orm.drizzle.team/docs/sql-schema-declaration
+// src/server/db/schema.ts
 
 import { sql } from "drizzle-orm";
 import { index, int, sqliteTableCreator, text } from "drizzle-orm/sqlite-core";
@@ -26,5 +25,26 @@ export const posts = createTable(
   },
   (example) => ({
     nameIndex: index("name_idx").on(example.name),
+  })
+);
+
+export const vehicles = createTable(
+  "vehicle",
+  {
+    id: int("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
+    type: text("type", { length: 256 }).notNull(),
+    description: text("description", { length: 1024 }).notNull(),
+    vehicleId: text("vehicleId", { length: 256 }).notNull(),
+    model: text("model", { length: 256 }).notNull(),
+    color: text("color", { length: 256 }).notNull(),
+    createdAt: int("created_at", { mode: "timestamp" })
+      .default(sql`(unixepoch())`)
+      .notNull(),
+    updatedAt: int("updated_at", { mode: "timestamp" }).$onUpdate(
+      () => new Date()
+    ),
+  },
+  (vehicle) => ({
+    typeIndex: index("type_idx").on(vehicle.type),
   })
 );
