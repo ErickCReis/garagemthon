@@ -42,7 +42,7 @@ const skillsList = [
   { label: "Skill 3", value: "skill3" },
 ] as const;
 
-export default function Page() {
+export default function VolunteerRegisterButton() {
   const router = useRouter();
   const form = useForm<CriarVoluntarioFormValues>({
     resolver: zodResolver(criarVoluntarioFormSchema),
@@ -65,7 +65,9 @@ export default function Page() {
 
   return (
     <Dialog>
-      <DialogTrigger>Se cadastre como voluntário</DialogTrigger>
+      <DialogTrigger asChild>
+        <Button variant="default">Se cadastre como voluntário</Button>
+      </DialogTrigger>
       <DialogContent>
         <Form {...form}>
           <form
