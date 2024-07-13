@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import OngItem from "@/components/ui/ongItem";
 import { ongs } from "@/data";
 
@@ -9,7 +10,9 @@ const Home: React.FC = () => {
         <p>Lista de ONGs cadastradas e que podem gerar pedidos</p>
         <div className="flex flex-col space-y-2">
           {ongs.map((ong) => (
-            <OngItem key={ong.id} nome={ong.nome} id={ong.id} />
+            <Link key={ong.id} href={`/ongs/${ong.id}`}>
+              <OngItem nome={ong.nome} id={ong.id} />
+            </Link>
           ))}
         </div>
       </section>
