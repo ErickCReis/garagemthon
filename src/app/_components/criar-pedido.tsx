@@ -47,15 +47,6 @@ import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 
-const steps = {
-  1: "Localização",
-  2: "Itens",
-  3: "Veículos",
-  4: "Dados extras",
-} as const;
-
-type Step = keyof typeof steps;
-
 const pontosColeta = [
   { label: "Ponto de Coleta 1", value: "coleta1" },
   { label: "Ponto de Coleta 2", value: "coleta2" },
