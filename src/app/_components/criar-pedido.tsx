@@ -109,6 +109,8 @@ export function CriarPedidoForm() {
     form.watch("meiosTransporte") ?? defaultValues.meiosTransporte;
 
   function onSubmit(data: CriarPedidoFormValues) {
+    console.log({ data });
+
     criarPedido.mutate(data);
   }
 

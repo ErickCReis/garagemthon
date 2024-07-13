@@ -20,7 +20,7 @@ const vehicleTypes = {
     "https://raw.githubusercontent.com/Grupo-14-8BIT/Img/3bc72fd1e4038a8b518ec6a1d7cd022b88930fbc/Profile/helicopter-svgrepo-com.svg",
 };
 
-const AddVehicle = () => {
+export default function Page({ params }: { params: { id: string } }) {
   const [vehicleData, setVehicleData] = useState({
     vehicleType: "",
     vehicleDescription: "",
@@ -40,7 +40,11 @@ const AddVehicle = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    criarVehiculo.mutate({ ...vehicleData, imgUrl: "" });
+    criarVehiculo.mutate({
+      ...vehicleData,
+      imgUrl: "",
+      voluntarioId: +params.id,
+    });
   };
 
   const handleVehicleTypeSelect = (type: string) => {
@@ -108,6 +112,4 @@ const AddVehicle = () => {
       </form>
     </div>
   );
-};
-
-export default AddVehicle;
+}
