@@ -22,6 +22,9 @@ export function Header() {
       <Link href="/mapa" className={cn(path === "/mapa" && "border-b-2")}>
         Mapa
       </Link>
+      <Link href="/vehiculos" className={cn(path === "/vehiculos" && "border-b-2")}>
+       Vehiculo
+      </Link>
     </nav>
   );
 }
