@@ -34,6 +34,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import classNames from "classnames";
 import { CheckIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 const skillsList = [
@@ -44,6 +45,9 @@ const skillsList = [
 
 export default function VolunteerRegisterButton() {
   const router = useRouter();
+
+  const [isOpen, setIsOpen] = useState(false);
+
   const form = useForm<CriarVoluntarioFormValues>({
     resolver: zodResolver(criarVoluntarioFormSchema),
     defaultValues: {},
@@ -56,6 +60,7 @@ export default function VolunteerRegisterButton() {
       });
 
       void router.push("/voluntarios");
+      setIsOpen(false);
     },
   });
 
@@ -64,7 +69,7 @@ export default function VolunteerRegisterButton() {
   };
 
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button variant="default">Se cadastre como voluntário</Button>
       </DialogTrigger>
@@ -188,12 +193,12 @@ export default function VolunteerRegisterButton() {
               )}
             />
             <div className="flex space-x-4">
-              <Button type="submit">Register</Button>
+              <Button type="submit">Criar</Button>
               <Button
                 type="button"
-                onClick={() => router.push("/volunteers/add-vehicle")}
+                onClick={() => router.push("/voluntarios/adicionar-veiculo")}
               >
-                Add Vehicle
+                Adicionar veículo
               </Button>
             </div>
           </form>
