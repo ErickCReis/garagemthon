@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import VolunteerRegisterButton from "@/components/ui/volunteer/VolunteerRegisterButton";
 import { api } from "@/trpc/server";
 import Link from "next/link";
 
@@ -10,9 +11,7 @@ export default async function Page() {
     <div className="container mx-auto p-4">
       <div className="flex justify-between mb-4">
         <h1 className="text-3xl font-bold">Todos os Voluntários</h1>
-        <Link href="/pedidos/">
-          <Button>Adicionar Voluntário</Button>
-        </Link>
+        <VolunteerRegisterButton />
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {voluntarios.map((voluntario) => (
