@@ -20,9 +20,9 @@ export function Pedido({ pedido }: { pedido: Pedido }) {
           <p>Entrega: {pedido.pontoEntrega}</p>
           <div className="w-6 p-2">
             {pedido.meiosTransportes.map((meio) => (
-              // @ts-expect-error: TODO: remover isso
               <MeioTransportIcon
                 key={meio}
+                // @ts-expect-error: TODO: remover isso
                 meio={meio}
                 className="size-4"
                 showLabel={false}
