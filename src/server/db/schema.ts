@@ -1,7 +1,13 @@
 // src/server/db/schema.ts
 
 import { sql } from "drizzle-orm";
-import { blob, int, sqliteTableCreator, text } from "drizzle-orm/sqlite-core";
+import {
+  blob,
+  index,
+  int,
+  sqliteTableCreator,
+  text,
+} from "drizzle-orm/sqlite-core";
 
 /**
  * This is an example of how to use the multi-project schema feature of Drizzle ORM. Use the same
@@ -51,10 +57,10 @@ export const vehicles = createTable(
       .default(sql`(unixepoch())`)
       .notNull(),
     updatedAt: int("updated_at", { mode: "timestamp" }).$onUpdate(
-      () => new Date()
+      () => new Date(),
     ),
   },
   (vehicle) => ({
     typeIndex: index("type_idx").on(vehicle.type),
-  })
+  }),
 );
