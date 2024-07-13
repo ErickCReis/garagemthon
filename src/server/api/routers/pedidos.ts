@@ -23,6 +23,7 @@ export const pedidosRouter = createTRPCRouter({
     .input(criarPedidoFormSchema)
     .mutation(async ({ ctx, input }) => {
       return ctx.db.insert(pedidos).values({
+        donoId: input.donoId,
         pontoColeta: input.pontoColeta,
         pontoEntrega: input.pontoEntrega,
         items: input.items,

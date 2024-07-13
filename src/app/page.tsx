@@ -1,12 +1,22 @@
+import { Button } from "@/components/ui/button";
+import { ongs } from "@/data";
+import Link from "next/link";
+
 export default async function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
-      <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16">
-        <section>
-          <h2>Centros de distribuição</h2>
-        </section>
+    <main className="flex min-h-screen flex-col items-center justify-center">
+      <div className="container flex items-center justify-center gap-12 px-4 py-16">
         <section>
           <h2>ONGs</h2>
+          <div className="flex flex-col space-y-2">
+            {ongs.map((ong) => (
+              <Link key={ong.id} href={`/ongs/${ong.id}`}>
+                <Button variant="outline" className="flex w-full gap-2">
+                  {ong.nome}
+                </Button>
+              </Link>
+            ))}
+          </div>
         </section>
         <section>
           <h2>Voluntários</h2>

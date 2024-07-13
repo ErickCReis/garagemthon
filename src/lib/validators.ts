@@ -1,8 +1,8 @@
-import { meiosTransporte } from "@/data/meios-transporte";
-import { tiposItem } from "@/data/tipos-item";
+import { meiosTransporte, tiposItem } from "@/data";
 import { z } from "zod";
 
 export const criarPedidoFormSchema = z.object({
+  donoId: z.string(),
   pontoColeta: z.string({
     required_error: "Selecione um ponto de coleta.",
   }),

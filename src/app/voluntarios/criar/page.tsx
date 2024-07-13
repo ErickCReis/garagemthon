@@ -1,10 +1,14 @@
 "use client";
 
-import React, { useState } from "react";
-import { useRouter } from "next/navigation";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { useForm } from "react-hook-form";
+import { Button } from "@/components/ui/button";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import {
   Form,
@@ -19,21 +23,14 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command";
-import { Button } from "@/components/ui/button";
-import { CheckIcon } from "lucide-react";
 import { toast } from "@/components/ui/use-toast";
 import VolunteerInput from "@/components/ui/volunteer/volunteerInput";
-import VolunteerTextarea from "@/components/ui/volunteer/volunteerTextarea";
-import VolunteerButton from "@/components/ui/volunteer/volunteerButton";
-import classNames from 'classnames';
+import { zodResolver } from "@hookform/resolvers/zod";
+import classNames from "classnames";
+import { CheckIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 
 const skillsList = [
   { label: "Skill 1", value: "skill1" },
@@ -51,7 +48,7 @@ const volunteerFormSchema = z.object({
 
 type VolunteerFormValues = z.infer<typeof volunteerFormSchema>;
 
-export function RegisterVolunteer() {
+export default function Page() {
   const router = useRouter();
   const form = useForm<VolunteerFormValues>({
     resolver: zodResolver(volunteerFormSchema),
@@ -75,7 +72,10 @@ export function RegisterVolunteer() {
       <DialogTrigger>Se cadastre como voluntário</DialogTrigger>
       <DialogContent>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
+          <form
+            onSubmit={form.handleSubmit(handleSubmit)}
+            className="space-y-8"
+          >
             <FormField
               control={form.control}
               name="name"
@@ -142,11 +142,13 @@ export function RegisterVolunteer() {
                           role="combobox"
                           className={classNames(
                             "justify-between",
-                            !field.value && "text-muted-foreground"
+                            !field.value && "text-muted-foreground",
                           )}
                         >
                           {field.value
-                            ? skillsList.find((skill) => skill.value === field.value)?.label
+                            ? skillsList.find(
+                                (skill) => skill.value === field.value,
+                              )?.label
                             : "Selecione uma habilidade."}
                         </Button>
                       </FormControl>
@@ -154,19 +156,25 @@ export function RegisterVolunteer() {
                     <PopoverContent className="p-0">
                       <Command>
                         <CommandInput placeholder="Buscar habilidade..." />
-                        <CommandEmpty>Nenhuma habilidade encontrada.</CommandEmpty>
+                        <CommandEmpty>
+                          Nenhuma habilidade encontrada.
+                        </CommandEmpty>
                         <CommandList>
                           <CommandGroup>
                             {skillsList.map((skill) => (
                               <CommandItem
                                 value={skill.label}
                                 key={skill.value}
-                                onSelect={() => form.setValue("skills", skill.value)}
+                                onSelect={() =>
+                                  form.setValue("skills", skill.value)
+                                }
                               >
                                 <CheckIcon
                                   className={classNames(
                                     "mr-2 h-4 w-4",
-                                    skill.value === field.value ? "opacity-100" : "opacity-0"
+                                    skill.value === field.value
+                                      ? "opacity-100"
+                                      : "opacity-0",
                                   )}
                                 />
                                 {skill.label}
@@ -183,7 +191,10 @@ export function RegisterVolunteer() {
             />
             <div className="flex space-x-4">
               <Button type="submit">Register</Button>
-              <Button type="button" onClick={() => router.push("/volunteers/add-vehicle")}>
+              <Button
+                type="button"
+                onClick={() => router.push("/volunteers/add-vehicle")}
+              >
                 Add Vehicle
               </Button>
             </div>
@@ -193,5 +204,3 @@ export function RegisterVolunteer() {
     </Dialog>
   );
 }
-
-export default RegisterVolunteer;

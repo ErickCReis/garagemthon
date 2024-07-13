@@ -13,6 +13,7 @@ export const createTable = sqliteTableCreator((name) => `garagemthon_${name}`);
 
 export const pedidos = createTable("pedido", {
   id: int("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
+  donoId: text("dono_id", { length: 256 }).notNull(),
   pontoColeta: text("ponto_coleta").notNull(),
   pontoEntrega: text("ponto_entrega").notNull(),
   items: blob("items", { mode: "json" }).notNull().$type<
@@ -33,7 +34,7 @@ export const pedidos = createTable("pedido", {
 });
 
 export const pedidosRelations = relations(pedidos, ({ many }) => ({
-  veiculos: many(pedidosVoluntarios),
+  voluntarios: many(pedidosVoluntarios),
 }));
 
 export const veiculos = createTable("veiculo", {
