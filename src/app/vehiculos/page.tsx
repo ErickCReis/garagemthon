@@ -19,7 +19,7 @@ export default function VehiclesPage() {
         <h2 className="text-center text-2xl font-bold">Veículos</h2>
         <h3 className="text-center text-2xl">Veículos disponíveis para transporte</h3>
         <div className="flex flex-col space-y-2">
-          {vehicles?.map((vehicle) => (
+          {vehicles?.map(({ vehicle, owner }) => (
             <div key={vehicle.id} className="flex items-center gap-4 p-4 border rounded-md">
               <MeioTransportIcon meio={vehicle.type as any} className="w-16 h-16" />
               <div>
@@ -28,6 +28,12 @@ export default function VehiclesPage() {
                 <p><strong>ID:</strong> {vehicle.vehicleId}</p>
                 <p><strong>Modelo:</strong> {vehicle.model}</p>
                 <p><strong>Cor:</strong> {vehicle.color}</p>
+                {owner && (
+                  <>
+                    <p><strong>Proprietário:</strong> {owner.nome}</p>
+                    <p><strong>Email:</strong> {owner.email}</p>
+                  </>
+                )}
               </div>
             </div>
           ))}

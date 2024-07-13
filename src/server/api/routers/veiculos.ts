@@ -1,11 +1,17 @@
 import { z } from "zod";
-
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
-import { veiculos } from "@/server/db/schema";
+import { veiculos, voluntarios } from "@/server/db/schema";
+import { eq } from "drizzle-orm";
 
 export const veiculosRouter = createTRPCRouter({
   getAll: publicProcedure.query(({ ctx }) => {
-    return ctx.db.select().from(veiculos);
+    return ctx.db
+      .select({
+        vehicle: veiculos,
+        owner: voluntarios,
+      })
+      .from(veiculos)
+      .leftJoin(voluntarios, eq(veiculos.voluntarioId, voluntarios.id));
   }),
   create: publicProcedure
     .input(
