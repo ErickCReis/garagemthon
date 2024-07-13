@@ -12,21 +12,27 @@ export function Header() {
       <Link href="/" className={cn(path === "/" && "border-b-2")}>
         Início
       </Link>
-      <Link href="/pedidos" className={cn(path === "/pedidos" && "border-b-2")}>
+      <Link
+        href="/pedidos"
+        className={cn(path.startsWith("/pedidos") && "border-b-2")}
+      >
         Pedidos
       </Link>
       <Link
         href="/voluntarios"
-        className={cn(path === "/voluntarios" && "border-b-2")}
+        className={cn(path.startsWith("/voluntarios") && "border-b-2")}
       >
         Voluntários
       </Link>
-      <Link href="/mapa" className={cn(path === "/mapa" && "border-b-2")}>
+      <Link
+        href="/mapa"
+        className={cn(path.startsWith("/mapa") && "border-b-2")}
+      >
         Mapa
       </Link>
       <Link
         href="/veiculos"
-        className={cn(path === "/veiculos" && "border-b-2")}
+        className={cn(path.startsWith("/veiculos") && "border-b-2")}
       >
         Veículos
       </Link>

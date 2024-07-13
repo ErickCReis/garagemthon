@@ -13,18 +13,19 @@ export function Pedido({ pedido }: { pedido: Pedido }) {
     <Link href={`/pedidos/${pedido.id}`}>
       <Card className="cursor-pointer">
         <CardHeader className="text-lg font-medium">{ong?.nome}</CardHeader>
-        <CardContent className="">
+        <CardContent className="flex flex-col gap-2">
           <p>Coleta: {pedido.pontoColeta}</p>
           <p>Entrega: {pedido.pontoEntrega}</p>
-          <div className="w-6 p-2">
+          <div className="flex gap-2">
             {pedido.meiosTransportes.map((meio) => (
-              <MeioTransportIcon
-                key={meio}
-                // @ts-expect-error: TODO: remover isso
-                meio={meio}
-                className="size-4"
-                showLabel={false}
-              />
+              <div className="rounded-lg border p-2" key={meio}>
+                <MeioTransportIcon
+                  // @ts-expect-error: TODO: remover isso
+                  meio={meio}
+                  className="size-8"
+                  showLabel={false}
+                />
+              </div>
             ))}
           </div>
         </CardContent>
