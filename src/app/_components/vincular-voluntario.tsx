@@ -12,11 +12,14 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "@/components/ui/use-toast";
 import { api } from "@/trpc/react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export function VincularVoluntario({ pedidoId }: { pedidoId: string }) {
   const [email, setEmail] = useState("");
   const [open, setOpen] = useState(false);
+
+  const router = useRouter();
 
   const vincularVoluntario = api.pedido.vincularVoluntario.useMutation({
     onSuccess: () => {
@@ -25,6 +28,8 @@ export function VincularVoluntario({ pedidoId }: { pedidoId: string }) {
       });
 
       setOpen(false);
+
+      router.refresh();
     },
   });
 
