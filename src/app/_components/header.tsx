@@ -9,7 +9,9 @@ export function Header() {
 
   return (
     <nav className="flex gap-6 text-lg font-semibold">
-      <Link href="/">Início</Link>
+      <Link href="/" className={cn(path === "/" && "border-b-2")}>
+        Início
+      </Link>
       <Link href="/pedidos" className={cn(path === "/pedidos" && "border-b-2")}>
         Pedidos
       </Link>
@@ -22,8 +24,11 @@ export function Header() {
       <Link href="/mapa" className={cn(path === "/mapa" && "border-b-2")}>
         Mapa
       </Link>
-      <Link href="/vehiculos" className={cn(path === "/vehiculos" && "border-b-2")}>
-       Vehiculo
+      <Link
+        href="/veiculos"
+        className={cn(path === "/veiculos" && "border-b-2")}
+      >
+        Veículos
       </Link>
     </nav>
   );

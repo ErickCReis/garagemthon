@@ -12,9 +12,7 @@ export function Pedido({ pedido }: { pedido: Pedido }) {
   return (
     <Link href={`/pedidos/${pedido.id}`}>
       <Card className="cursor-pointer">
-        <CardHeader>
-          <h2>{ong?.nome}</h2>
-        </CardHeader>
+        <CardHeader className="text-lg font-medium">{ong?.nome}</CardHeader>
         <CardContent className="">
           <p>Coleta: {pedido.pontoColeta}</p>
           <p>Entrega: {pedido.pontoEntrega}</p>
