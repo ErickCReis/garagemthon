@@ -21,11 +21,15 @@ export default async function Page({ params }: { params: { id: string } }) {
 
   return (
     <main className="flex flex-col gap-4">
-      <h1 className="text-lg font-bold">Pedido #{pedido.id}</h1>
+      <h1 className="text-xl font-bold">Pedido #{pedido.id}</h1>
 
       <Pedido pedido={pedido} />
 
-      <h2 className="text-lg font-bold">Voluntários</h2>
+      <div className="flex items-center justify-between gap-2">
+        <h2 className="text-xl font-bold">Voluntários</h2>
+
+        <VincularVoluntario pedidoId={params.id} />
+      </div>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {pedido.voluntarios.map((voluntario) => (
           <Card key={voluntario.id} className="rounded-lg border p-4 shadow-md">
@@ -45,8 +49,6 @@ export default async function Page({ params }: { params: { id: string } }) {
           </Card>
         ))}
       </div>
-
-      <VincularVoluntario pedidoId={params.id} />
     </main>
   );
 }
