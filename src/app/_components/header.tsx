@@ -8,7 +8,7 @@ export function Header() {
   const path = usePathname();
 
   return (
-    <nav className="flex gap-3 text-lg font-semibold">
+    <nav className="flex gap-6 text-lg font-semibold">
       <Link href="/">Início</Link>
       <Link href="/pedidos" className={cn(path === "/pedidos" && "border-b-2")}>
         Pedidos
@@ -18,6 +18,9 @@ export function Header() {
         className={cn(path === "/voluntarios" && "border-b-2")}
       >
         Voluntários
+      </Link>
+      <Link href="/mapa" className={cn(path === "/mapa" && "border-b-2")}>
+        Mapa
       </Link>
     </nav>
   );
