@@ -16,6 +16,7 @@ export const veiculosRouter = createTRPCRouter({
         vehicleModel: z.string(),
         vehicleColor: z.string(),
         imgUrl: z.string(),
+        voluntarioId: z.number(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -26,6 +27,7 @@ export const veiculosRouter = createTRPCRouter({
         type: input.vehicleType,
         model: input.vehicleModel,
         imgUrl: input.imgUrl,
+        voluntarioId: input.voluntarioId,
       });
     }),
 });

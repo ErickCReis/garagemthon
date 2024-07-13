@@ -45,6 +45,7 @@ export const veiculos = createTable("veiculo", {
   model: text("model", { length: 256 }).notNull(),
   color: text("color", { length: 256 }).notNull(),
   imgUrl: text("img_url", { length: 256 }).notNull(),
+  voluntarioId: int("voluntario_id", { mode: "number" }),
   createdAt: int("created_at", { mode: "timestamp" })
     .default(sql`(unixepoch())`)
     .notNull(),
@@ -67,7 +68,14 @@ export const voluntarios = createTable("voluntario", {
 });
 
 export const voluntariosRelations = relations(voluntarios, ({ many }) => ({
-  veiculos: many(voluntariosVeiculos),
+  veiculos: many(veiculos),
+}));
+
+export const veiculosRelations = relations(veiculos, ({ one }) => ({
+  voluntario: one(voluntarios, {
+    fields: [veiculos.voluntarioId],
+    references: [voluntarios.id],
+  }),
 }));
 
 export const pedidosVoluntarios = createTable("pedido_voluntario", {
@@ -78,14 +86,4 @@ export const pedidosVoluntarios = createTable("pedido_voluntario", {
   voluntarioId: int("voluntario_id", { mode: "number" })
     .notNull()
     .references(() => voluntarios.id),
-});
-
-export const voluntariosVeiculos = createTable("voluntario_veiculo", {
-  id: int("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
-  voluntarioId: int("voluntario_id", { mode: "number" })
-    .notNull()
-    .references(() => voluntarios.id),
-  vehicleId: int("vehicle_id", { mode: "number" })
-    .notNull()
-    .references(() => veiculos.id),
 });
