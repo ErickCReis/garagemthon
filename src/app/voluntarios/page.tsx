@@ -18,7 +18,7 @@ export default async function Page() {
           <Card key={voluntario.voluntario.id} className="rounded-lg border p-4 shadow-md">
             <div className="flex items-center space-x-4 mb-4">
               <div className="rounded-full bg-gray-200 p-4">
-                <span className="text-6xl">👩🏻‍💻</span>
+                <span className="text-6xl">👩🏻‍💻</span> 
               </div>
               <div>
                 <h2 className="text-xl font-bold">{voluntario.voluntario.nome}</h2>
