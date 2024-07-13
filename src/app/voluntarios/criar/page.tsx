@@ -23,6 +23,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { toast } from "@/components/ui/use-toast";
 import VolunteerInput from "@/components/ui/volunteer/volunteerInput";
 import {
   criarVoluntarioFormSchema,
@@ -48,7 +49,15 @@ export default function Page() {
     defaultValues: {},
   });
 
-  const criarVoluntario = api.voluntarios.create.useMutation();
+  const criarVoluntario = api.voluntarios.create.useMutation({
+    onSuccess: () => {
+      toast({
+        title: "Voluntário criado com sucesso!",
+      });
+
+      void router.push("/voluntarios");
+    },
+  });
 
   const handleSubmit = (data: CriarVoluntarioFormValues) => {
     criarVoluntario.mutate(data);

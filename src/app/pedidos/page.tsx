@@ -9,7 +9,7 @@ export default async function Page() {
   return (
     <>
       <div className="flex justify-between">
-        <h1>Pedidos</h1>
+        <h1>Todos os Pedidos</h1>
         <Link href="/pedidos/criar">
           <Button>Criar Pedido</Button>
         </Link>
