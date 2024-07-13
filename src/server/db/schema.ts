@@ -18,8 +18,15 @@ export const pedidos = createTable(
     id: int("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
     pontoColeta: text("ponto_coleta").notNull(),
     pontoEntrega: text("ponto_entrega").notNull(),
-    items: blob("items", { mode: "json" }).notNull(),
-    meiosTransportes: blob("meios_transportes", { mode: "json" }).notNull(),
+    items: blob("items", { mode: "json" }).notNull().$type<
+      {
+        tipo: string;
+        quantidade: number;
+      }[]
+    >(),
+    meiosTransportes: blob("meios_transportes", { mode: "json" })
+      .notNull()
+      .$type<string[]>(),
     createdAt: int("created_at", { mode: "timestamp" })
       .default(sql`(unixepoch())`)
       .notNull(),
