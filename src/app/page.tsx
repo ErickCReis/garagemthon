@@ -11,6 +11,11 @@ export default async function Home() {
         <section>
           <h2>Voluntários</h2>
         </section>
+        <iframe
+          src="https://www.google.com/maps/d/embed?mid=1ZlKA__gK8tH-WY6mbDeQzltsiwao7Q8&ehbc=2E312F"
+          width="640"
+          height="480"
+        ></iframe>
       </div>
     </main>
   );
