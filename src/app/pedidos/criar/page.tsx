@@ -1,5 +1,10 @@
-import { CriarPedidoSteps } from "../../_components/criar-pedido";
+import { CriarPedidoForm } from "../../_components/criar-pedido";
 
 export default function Page() {
-  return <CriarPedidoSteps />;
+  return (
+    <main className="space-y-10">
+      <h1 className="text-2xl font-bold">Novo Pedido</h1>
+      <CriarPedidoForm />
+    </main>
+  );
 }

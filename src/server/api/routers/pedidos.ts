@@ -19,6 +19,17 @@ export const pedidosRouter = createTRPCRouter({
   getAll: publicProcedure.query(({ ctx }) => {
     return ctx.db.select().from(pedidos);
   }),
+  getAllByDono: publicProcedure.input(z.string()).query(({ ctx, input }) => {
+    return ctx.db
+      .select()
+      .from(pedidosVoluntarios)
+      .leftJoin(pedidos, eq(pedidos.id, pedidosVoluntarios.pedidoId))
+      .leftJoin(
+        voluntarios,
+        eq(voluntarios.id, pedidosVoluntarios.voluntarioId),
+      )
+      .where(eq(pedidos.donoId, input));
+  }),
   create: publicProcedure
     .input(criarPedidoFormSchema)
     .mutation(async ({ ctx, input }) => {
