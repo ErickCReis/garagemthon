@@ -1,22 +1,23 @@
 "use client";
 
-import React, { useState } from "react";
-import { Car, Truck, Tractor, Sailboat } from "lucide-react";
-import Image from 'next/image';
+import { Button } from "@/components/ui/button";
+import VolunteerButton from "@/components/ui/volunteer/volunteerButton";
 import VolunteerInput from "@/components/ui/volunteer/volunteerInput";
 import VolunteerTextarea from "@/components/ui/volunteer/volunteerTextarea";
-import VolunteerButton from "@/components/ui/volunteer/volunteerButton";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils"; // Make sure you have this utility
 import { api } from "@/trpc/react";
+import { Car, Sailboat, Tractor, Truck } from "lucide-react";
+import Image from "next/image";
+import React, { useState } from "react";
 
 const vehicleTypes = {
   Carro: Car,
   Caminhao: Truck,
   Trator: Tractor,
   Barco: Sailboat,
-  Drone: 'https://raw.githubusercontent.com/Grupo-14-8BIT/Img/3bc72fd1e4038a8b518ec6a1d7cd022b88930fbc/Profile/drone-svgrepo-com.svg',
-  Helicoptero: 'https://raw.githubusercontent.com/Grupo-14-8BIT/Img/3bc72fd1e4038a8b518ec6a1d7cd022b88930fbc/Profile/helicopter-svgrepo-com.svg',
+  Drone:
+    "https://raw.githubusercontent.com/Grupo-14-8BIT/Img/3bc72fd1e4038a8b518ec6a1d7cd022b88930fbc/Profile/drone-svgrepo-com.svg",
+  Helicoptero:
+    "https://raw.githubusercontent.com/Grupo-14-8BIT/Img/3bc72fd1e4038a8b518ec6a1d7cd022b88930fbc/Profile/helicopter-svgrepo-com.svg",
 };
 
 const AddVehicle = () => {
@@ -27,17 +28,19 @@ const AddVehicle = () => {
     vehicleModel: "",
     vehicleColor: "",
   });
-  
-  const criarVehiculo = api.volunteers.create.useMutation();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const criarVehiculo = api.veiculos.create.useMutation();
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     const { name, value } = e.target;
     setVehicleData({ ...vehicleData, [name]: value });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    criarVehiculo.mutate(vehicleData)
+    criarVehiculo.mutate(vehicleData);
   };
 
   const handleVehicleTypeSelect = (type: string) => {
@@ -49,8 +52,8 @@ const AddVehicle = () => {
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Cadastrar veículo</h1>
-      <div className="flex flex-wrap gap-2 mb-4">
+      <h1 className="mb-4 text-2xl font-bold">Cadastrar veículo</h1>
+      <div className="mb-4 flex flex-wrap gap-2">
         {Object.entries(vehicleTypes).map(([type, Icon]) => (
           <Button
             type="button"
@@ -59,7 +62,7 @@ const AddVehicle = () => {
             className="flex min-h-32 min-w-32 flex-col items-center gap-2 p-4"
             onClick={() => handleVehicleTypeSelect(type)}
           >
-            {typeof Icon === 'string' ? (
+            {typeof Icon === "string" ? (
               <Image src={Icon} alt={type} width={32} height={32} />
             ) : (
               <Icon className="h-8 w-8" />

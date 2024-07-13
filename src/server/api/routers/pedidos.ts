@@ -24,4 +24,7 @@ export const pedidosRouter = createTRPCRouter({
         ),
       });
     }),
+  vincularVoluntario: publicProcedure.mutation(async ({ ctx, input }) => {
+    //
+  }),
 });
