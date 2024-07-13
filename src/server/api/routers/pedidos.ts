@@ -11,6 +11,10 @@ export const pedidosRouter = createTRPCRouter({
       .from(pedidos)
       .where(eq(pedidos.id, input));
 
+    if (!pedidoRows[0]) {
+      return;
+    }
+
     const pedidosVoluntariosRows = await ctx.db
       .select()
       .from(pedidosVoluntarios)
