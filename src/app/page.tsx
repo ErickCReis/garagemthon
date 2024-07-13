@@ -1,23 +1,20 @@
-import { Button } from "@/components/ui/button";
+import OngItem from "@/components/ui/ongItem";
 import { ongs } from "@/data";
-import Link from "next/link";
 
-export default async function Home() {
+const Home: React.FC = () => {
   return (
-    <main className="flex min-h-screen flex-col">
+    <main className="flex min-h-screen flex-col space-y-4 p-4">
       <section className="space-y-4">
         <h2 className="text-2xl font-bold">ONGs</h2>
         <p>Lista de ONGs cadastradas e que podem gerar pedidos</p>
         <div className="flex flex-col space-y-2">
           {ongs.map((ong) => (
-            <Link key={ong.id} href={`/ongs/${ong.id}`}>
-              <Button variant="outline" className="flex w-full gap-2">
-                {ong.nome}
-              </Button>
-            </Link>
+            <OngItem key={ong.id} nome={ong.nome} id={ong.id} />
           ))}
         </div>
       </section>
     </main>
   );
-}
+};
+
+export default Home;
