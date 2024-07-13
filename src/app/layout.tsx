@@ -3,8 +3,8 @@ import "@/styles/globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
-
 import { TRPCReactProvider } from "@/trpc/react";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Create T3 App",
