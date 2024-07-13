@@ -3,6 +3,7 @@ export const meiosTransporte = [
   "Caminhao",
   "Barco",
   "Drone",
+  "Trator",
   "Helicoptero",
 ] as const;
 export type MeioTransporte = (typeof meiosTransporte)[number];

@@ -1,10 +1,12 @@
 import { type MeioTransporte } from "@/data";
-import { Car, Sailboat, Truck } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Car, Sailboat, Tractor, Truck } from "lucide-react";
 
 export const iconMap = {
   Carro: Car,
   Caminhao: Truck,
   Barco: Sailboat,
+  Trator: Tractor,
   Drone: ({ className }: { className?: string }) => (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -42,13 +44,21 @@ export const iconMap = {
   ),
 } satisfies Record<MeioTransporte, React.FC>;
 
-export function MeioTransportIcon({ meio }: { meio: MeioTransporte }) {
+export function MeioTransportIcon({
+  meio,
+  className,
+  showLabel = true,
+}: {
+  meio: MeioTransporte;
+  className?: string;
+  showLabel?: boolean;
+}) {
   const Icon = iconMap[meio];
 
   return (
     <div className="flex flex-col items-center gap-2">
-      {<Icon className="size-16" />}
-      <p>{meio}</p>
+      {<Icon className={cn("size-16", className)} />}
+      {showLabel && <p>{meio}</p>}
     </div>
   );
 }

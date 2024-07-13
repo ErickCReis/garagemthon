@@ -7,7 +7,7 @@ export default async function Page() {
   return (
     <>
       <div className="flex justify-between">
-        <h1>Todos os Pedidos</h1>
+        <h1 className="text-2xl font-bold">Todos os Pedidos</h1>
       </div>
       <div className="">
         {pedidos.map((pedido) => (

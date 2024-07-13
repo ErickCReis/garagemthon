@@ -16,7 +16,7 @@ export default async function Page({ params }: { params: { id: string } }) {
   return (
     <>
       <div className="flex justify-between">
-        <h1>{ong.nome}</h1>
+        <h1 className="text-2xl font-bold">{ong.nome}</h1>
         <Link href={`/ongs/${ong.id}/criar-pedido`}>
           <Button>Criar Pedido</Button>
         </Link>
