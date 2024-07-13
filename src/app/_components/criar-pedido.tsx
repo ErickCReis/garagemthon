@@ -122,7 +122,7 @@ export function CriarPedidoSteps() {
   }
 
   return (
-    <main className="container max-w-7xl space-y-10 p-8">
+    <main>
       <h1 className="text-2xl font-bold">Criar Pedido</h1>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -155,7 +155,7 @@ export function CriarPedidoSteps() {
                   <PopoverContent className="w-[--radix-popover-trigger-width] p-0">
                     <Command>
                       <CommandInput placeholder="Buscar ..." className="h-9" />
-                      <CommandEmpty>No language found.</CommandEmpty>
+                      <CommandEmpty>Nenhum ponto encontrado.</CommandEmpty>
                       <CommandList>
                         <CommandGroup>
                           {pontosColeta.map((pc) => (

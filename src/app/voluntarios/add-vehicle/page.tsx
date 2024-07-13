@@ -40,7 +40,7 @@ const AddVehicle = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    criarVehiculo.mutate(vehicleData);
+    criarVehiculo.mutate({ ...vehicleData, imgUrl: "" });
   };
 
   const handleVehicleTypeSelect = (type: string) => {
