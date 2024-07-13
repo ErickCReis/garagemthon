@@ -4,8 +4,6 @@ import { Pedido } from "../_components/pedido";
 export default async function Page() {
   const pedidos = await api.pedido.getAll();
 
-  console.log({ pedidos });
-
   return (
     <>
       <h1>Pedidos</h1>

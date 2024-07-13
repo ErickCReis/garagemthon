@@ -1,8 +1,21 @@
 import { criarPedidoFormSchema } from "@/lib/validators";
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
-import { pedidos } from "@/server/db/schema";
+import { pedidos, pedidosVoluntarios, voluntarios } from "@/server/db/schema";
+import { eq } from "drizzle-orm";
+import { z } from "zod";
 
 export const pedidosRouter = createTRPCRouter({
+  getById: publicProcedure.input(z.number()).query(({ ctx, input }) => {
+    return ctx.db
+      .select()
+      .from(pedidosVoluntarios)
+      .leftJoin(pedidos, eq(pedidos.id, pedidosVoluntarios.pedidoId))
+      .leftJoin(
+        voluntarios,
+        eq(voluntarios.id, pedidosVoluntarios.voluntarioId),
+      )
+      .where(eq(pedidos.id, input));
+  }),
   getAll: publicProcedure.query(({ ctx }) => {
     return ctx.db.select().from(pedidos);
   }),

@@ -43,6 +43,7 @@ export const veiculos = createTable("veiculo", {
   vehicleId: text("vehicleId", { length: 256 }).notNull(),
   model: text("model", { length: 256 }).notNull(),
   color: text("color", { length: 256 }).notNull(),
+  imgUrl: text("img_url", { length: 256 }).notNull(),
   createdAt: int("created_at", { mode: "timestamp" })
     .default(sql`(unixepoch())`)
     .notNull(),
