@@ -14,3 +14,15 @@ export const criarPedidoFormSchema = z.object({
 });
 
 export type CriarPedidoFormValues = z.infer<typeof criarPedidoFormSchema>;
+
+export const criarVoluntarioFormSchema = z.object({
+  name: z.string({ required_error: "Nome é obrigatório." }),
+  email: z.string().email("Email inválido."),
+  phone: z.string({ required_error: "Número de celular é obrigatório." }),
+  cpf: z.string({ required_error: "CPF é obrigatório." }),
+  skills: z.string({ required_error: "Selecione uma habilidade." }),
+});
+
+export type CriarVoluntarioFormValues = z.infer<
+  typeof criarVoluntarioFormSchema
+>;

@@ -1,3 +1,4 @@
+import { criarVoluntarioFormSchema } from "@/lib/validators";
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
 import { veiculos, voluntarios } from "@/server/db/schema";
 import { eq } from "drizzle-orm";
@@ -17,9 +18,15 @@ export const voluntariosRouter = createTRPCRouter({
       .from(voluntarios)
       .leftJoin(veiculos, eq(voluntarios.id, veiculos.id));
   }),
-  create: publicProcedure.mutation(async ({ ctx, input }) => {
-    //
-  }),
+  create: publicProcedure
+    .input(criarVoluntarioFormSchema)
+    .mutation(async ({ ctx, input }) => {
+      return ctx.db.insert(voluntarios).values({
+        nome: input.name,
+        email: input.email,
+        cpf: input.cpf,
+      });
+    }),
   vincularPedido: publicProcedure.mutation(async ({ ctx, input }) => {
     //
   }),

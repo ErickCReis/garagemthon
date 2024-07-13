@@ -22,6 +22,7 @@ export const pedidosRouter = createTRPCRouter({
   create: publicProcedure
     .input(criarPedidoFormSchema)
     .mutation(async ({ ctx, input }) => {
+      // @ts-expect-error - TODO: rever
       return ctx.db.insert(pedidos).values({
         donoId: input.donoId,
         pontoColeta: input.pontoColeta,

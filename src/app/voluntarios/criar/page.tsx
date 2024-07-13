@@ -23,14 +23,17 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { toast } from "@/components/ui/use-toast";
 import VolunteerInput from "@/components/ui/volunteer/volunteerInput";
+import {
+  criarVoluntarioFormSchema,
+  type CriarVoluntarioFormValues,
+} from "@/lib/validators";
+import { api } from "@/trpc/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import classNames from "classnames";
 import { CheckIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 
 const skillsList = [
   { label: "Skill 1", value: "skill1" },
@@ -38,33 +41,17 @@ const skillsList = [
   { label: "Skill 3", value: "skill3" },
 ] as const;
 
-const volunteerFormSchema = z.object({
-  name: z.string().nonempty("Nome é obrigatório."),
-  email: z.string().email("Email inválido."),
-  phone: z.string().nonempty("Número de celular é obrigatório."),
-  cpf: z.string().nonempty("CPF é obrigatório."),
-  skills: z.string().nonempty("Selecione uma habilidade."),
-});
-
-type VolunteerFormValues = z.infer<typeof volunteerFormSchema>;
-
 export default function Page() {
   const router = useRouter();
-  const form = useForm<VolunteerFormValues>({
-    resolver: zodResolver(volunteerFormSchema),
+  const form = useForm<CriarVoluntarioFormValues>({
+    resolver: zodResolver(criarVoluntarioFormSchema),
     defaultValues: {},
   });
 
-  const handleSubmit = (data: VolunteerFormValues) => {
-    console.log("Form Data Submitted: ", data);
-    toast({
-      title: "You submitted the following values:",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    });
+  const criarVoluntario = api.voluntarios.create.useMutation();
+
+  const handleSubmit = (data: CriarVoluntarioFormValues) => {
+    criarVoluntario.mutate(data);
   };
 
   return (
